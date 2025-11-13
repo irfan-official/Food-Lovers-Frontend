@@ -39,9 +39,10 @@ function HeroShow() {
           gradientWidth={300}
           gradientColor={gradColor}
         >
-          {foodie.map(({ image }, index) => (
-            <HeroImgCard key={index} index={index} image={image} />
-          ))}
+          {foodie.length >= 1 &&
+            foodie.map(({ image }, index) => (
+              <HeroImgCard key={index} index={index} image={image} />
+            ))}
         </Marquee>
       </section>
 

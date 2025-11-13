@@ -34,18 +34,18 @@ function MeetOurTopReviewersShows() {
             disableOnInteraction: true,
           }}
           pagination={{ clickable: true }}
-          navigation={true} // ✅ enables arrow buttons
+          navigation={true} 
           modules={[Autoplay, Pagination, Navigation]}
           className="mySwiper"
         >
           {topReviewers ? (
             topReviewers.map(
-              ({ name, nickName, image, rating, statement }, index) => (
+              ({ name, createdAt, image, rating, statement }, index) => (
                 <SwiperSlide key={index} className="">
                   <section className="flex items-center justify-center">
                     <MeetOurTopReviewersCard
                       name={name}
-                      nickName={nickName}
+                      createdAt={createdAt}
                       image={image}
                       rating={rating}
                       statement={statement}

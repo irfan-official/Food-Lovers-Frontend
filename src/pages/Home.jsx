@@ -15,7 +15,6 @@ import ReviewCard from "../components/ReviewCard.jsx";
 import HeroShow from "./HeroShow.jsx";
 import Nav from "../components/Nav.jsx";
 
-import usersFeedBackData from "../seeds/usersFeedback.js";
 import Marquee from "react-fast-marquee";
 
 function Home() {
@@ -78,6 +77,7 @@ function Home() {
                       limitedReviewsData.map(
                         (
                           {
+                            _id,
                             foodName,
                             image,
                             category,
@@ -85,11 +85,14 @@ function Home() {
                             restaurantName,
                             location,
                             reviewText,
+                            createdAt,
+                            loved,
                           },
                           index
                         ) => (
                           <ReviewCard
-                            key={index}
+                            key={String(_id)}
+                            reviewId={String(_id)}
                             foodName={foodName}
                             image={image}
                             category={category}
@@ -97,6 +100,8 @@ function Home() {
                             restaurantName={restaurantName}
                             location={location}
                             reviewText={reviewText}
+                            createdAt={createdAt}
+                            loveCount={loved.length}
                           />
                         )
                       )}

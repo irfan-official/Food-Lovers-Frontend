@@ -1,7 +1,13 @@
 import React from "react";
 import { FaStar } from "react-icons/fa";
 
-function MeetOurTopReviewersCard({ name, nickName, image, rating, statement }) {
+function MeetOurTopReviewersCard({
+  name,
+  createdAt,
+  image,
+  rating,
+  statement,
+}) {
   return (
     <div className="w-[22rem] md:w-[35rem] h-[17rem] p-5 md:p-10 flex flex-col justify-between border rounded-lg shadow-sm gap-8 bg-[#F6F2ED]">
       <section className="__top__ flex items-center gap-4">
@@ -10,7 +16,7 @@ function MeetOurTopReviewersCard({ name, nickName, image, rating, statement }) {
         </section>
         <section className="__info__ flex flex-col justify-center">
           <h2 className="text-xl font-bold">{name}</h2>
-          <h4 className="text-gray-600/40 font-semibold">{nickName}</h4>
+          <h4 className="text-gray-600/40 font-semibold">{createdAt}</h4>
         </section>
       </section>
       <section className="__bottom__ flex flex-col gap-2">

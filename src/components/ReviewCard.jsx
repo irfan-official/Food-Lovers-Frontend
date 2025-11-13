@@ -10,8 +10,10 @@ import { MdLocationPin } from "react-icons/md";
 import { FaStreetView } from "react-icons/fa6";
 import { FaHotel } from "react-icons/fa6";
 import { IoHome } from "react-icons/io5";
+import moment from "moment";
 
 function ReviewCard({
+  reviewId,
   foodName,
   image,
   category,
@@ -19,7 +21,28 @@ function ReviewCard({
   restaurantName,
   location,
   reviewText,
+  createdAt,
+  loveCount,
 }) {
+  function resizeText() {
+    let text = reviewText || "";
+    let str = "";
+    let remainsStr = "";
+    for (let i = 0, lim = text.length; i < lim; i++) {
+      if (i < 45) {
+        str += text[i];
+      } else {
+        remainsStr += text[i];
+      }
+    }
+    return {
+      uppText: str,
+      remainText: remainsStr,
+    };
+  }
+
+  const text = resizeText();
+
   return (
     <div className="relative px-5  pt-4 pb-1 w-[22rem] md:w-[24rem] lg:w-[23rem] 2xl:w-[25rem] h-[39rem]  lg:h-[39.3rem] border flex flex-col rounded-lg gap-4 shadow text-[0.9rem] justify-between">
       <section className="__title__ w-full flex gap-2  ">
@@ -42,7 +65,9 @@ function ReviewCard({
                 <FaStar />
                 <FaStar />
               </div>
-              <div className="text-[0.65rem]">12/12/2024</div>
+              <div className="text-[0.65rem]">
+                {moment(createdAt).format("DD/MM/YY")}
+              </div>
             </div>
           </div>
           <div className="w-12 h-full  flex items-center justify-center  flex-col gap-2">
@@ -52,7 +77,7 @@ function ReviewCard({
               </span>
             </button>
             <span className="font-bold text-violet-950 bg-violet-300/20 px-3  rounded-2xl">
-              300k
+              {loveCount}
             </span>
           </div>
         </div>
@@ -69,7 +94,7 @@ function ReviewCard({
             <span className="text-stone-600 bg-yellow-400 p-1 rounded shadow ">
               <MdOutlineRestaurant size={21} />
             </span>
-            <span className="font-semibold text-white">Home</span>
+            <span className="font-semibold text-white">{category}</span>
           </span>
         </section>
       </section>
@@ -80,12 +105,13 @@ function ReviewCard({
         <section className="__provider_info__ flex items-center justify-between mt-1">
           <section className="__provider_name__ font-semibold text-md 2xl:text-lg  flex items-center gap-3">
             <span className="text-[1rem] text-white shadow-md p-2 rounded-md bg-purple-900">
-              <IoHome />
-              {/*  <FaHotel /> */}
-              {/*  <FaStreetView /> */}
+              {category === "Home" && <IoHome />}
+              {category === "Street" && <FaStreetView />}
+              {category === "Hotel" && <FaHotel />}
+              {category === "Restaurant" && <FaHotel />}
             </span>
             <span className="text-violet-900 font-semibold text-md">
-              Street Food
+              {restaurantName}
             </span>
           </section>
           <section className="__location__  flex gap-1 items-center">
@@ -96,20 +122,18 @@ function ReviewCard({
           </section>
         </section>
         <section className="__description__ mt-2 w-full  overflow-hidden pb-2">
-          <h2 className="_top_">
-            Lorem ipsum dolor sit, amet consectetur ewd d
-          </h2>
+          <h2 className="_top_">{text.uppText}</h2>
           <section className="_bottom_ flex items-center justify-between w-full ">
             <section className="_left_ w-[61%]">
               <h2 className="_text_ h-[47px] line-clamp-2">
-                Lorem ipsum dolor sit, amet consectetur jdnj dehudh ee Ls jdu
+                {text.remainText}
               </h2>
             </section>
 
             <section className="_right_ __view_details-button__ flex justify-center pt-2  ">
               <NavLink
                 className="px-5 py-3 shadow-md text-nowrap  text-black rounded-lg bg-violet-200 hover:bg-violet-300"
-                to={`/reviews/${serviceId}`}
+                to={`/reviews/${reviewId}`}
               >
                 View Details
               </NavLink>
