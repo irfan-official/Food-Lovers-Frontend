@@ -112,15 +112,15 @@ function Home() {
           <Outlet />
         ) : (
           <>
-            <section className="_Hero_ w-full flex flex-col items-center justify-center px-10 mt-5">
+            <section className="_Hero_ w-full flex flex-col items-center justify-center px-4 lg:px-10 mt-5">
               <div className="w-full relative rounded-2xl overflow-hidden shadow-lg">
-                <section className="w-full h-[85vh] flex items-center justify-center bg-gray-100 [perspective:1000px] overflow-clip border ">
+                <section className="w-full h-[70vh] lg:h-[85vh] flex items-center justify-center bg-gray-100 [perspective:1000px] overflow-clip border ">
                   <section className="w-[150%] bg-black rounded-xl shadow-2xl [transform-style:preserve-3d] [transform:rotateX(3deg)_rotateY(23deg)_translateZ(100px)] transition-transform duration-700 -rotate-3 bg-center">
                     <HeroShow />
                   </section>
                 </section>
                 <section className="__overlay__ w-full h-full bg-black/65 md:[background:linear-gradient(to_right,rgba(0,0,0,1)_0%,rgba(0,0,0,0.92)_2%,rgba(0,0,0,0.50)_50%,rgba(0,0,0,0.80)_100%)] backdrop-blur-[1px] absolute top-0 r-0 z-[10]">
-                  <section className="w-full h-full flex items-center justify-center text-white/30 font-bold text-[10rem] lovers-quarrel-regular hero-text text-center">
+                  <section className="w-full h-full flex items-center justify-center text-white/30 font-bold text-[5rem] lg:text-[10rem] lovers-quarrel-regular hero-text text-center">
                     Food is culture, food is connection.
                   </section>
                 </section>

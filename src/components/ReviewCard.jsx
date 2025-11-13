@@ -24,7 +24,7 @@ function ReviewCard({
   category,
 }) {
   return (
-    <div className="relative px-5  pt-4 pb-1 w-[22rem] md:w-[24rem] lg:w-[23rem] 2xl:w-[25rem] h-[36rem] md:h-[36rem] lg:h-[39.3rem] border flex flex-col rounded-lg gap-4 shadow text-[0.9rem] justify-between">
+    <div className="relative px-5  pt-4 pb-1 w-[22rem] md:w-[24rem] lg:w-[23rem] 2xl:w-[25rem] h-[39rem]  lg:h-[39.3rem] border flex flex-col rounded-lg gap-4 shadow text-[0.9rem] justify-between">
       <section className="__title__ w-full flex gap-2  ">
         <div className="__left__  object-cover bg-cover w-14 h-14 rounded-full overflow-hidden border-2 border-slate-300 ">
           <img
