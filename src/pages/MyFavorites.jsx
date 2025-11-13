@@ -8,7 +8,7 @@ import { MdReviews } from "react-icons/md";
 import ReviewCard from "../components/ReviewCard.jsx";
 
 function MyFavorites() {
-  const { serviceData, loader } = useContext(Data_Context);
+  const { allReviews, loader } = useContext(Data_Context);
 
   const [searchReviews, setSearchReviews] = useState("");
   const [searchLoading, setSearchLoading] = useState(false);
@@ -29,7 +29,7 @@ function MyFavorites() {
       const regex = new RegExp(escaped, "i"); // case-insensitive
 
       // filter by matching in serviceName, providerName, or category
-      const matched = serviceData.filter(
+      const matched = allReviews.filter(
         (item) =>
           regex.test(item.serviceName) ||
           regex.test(item.providerName) ||
@@ -43,7 +43,7 @@ function MyFavorites() {
     } finally {
       setSearchLoading(false);
     }
-  }, [searchReviews, serviceData]);
+  }, [searchReviews, allReviews]);
 
   if (loader) {
     return (
@@ -72,7 +72,7 @@ function MyFavorites() {
         >
           <h2 className="_apps-label_ text-[#632EE3] font-semibold flex items-center gap-2 text-[0.9rem] sm:text-[1rem]">
             <span className="px-4 py-2 bg-white rounded-md shadow font-extrabold">
-              {searchReviews ? filteredReviews.length : serviceData.length}
+              {searchReviews ? filteredReviews.length : allReviews.length}
             </span>
             <span className=" underline"> Reviews Found</span>
           </h2>
@@ -161,7 +161,7 @@ function MyFavorites() {
             </p>
           )
         ) : (
-          serviceData.map(
+          allReviews.map(
             (
               {
                 serviceId,

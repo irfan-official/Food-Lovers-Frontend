@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../index.css";
 import { FaStar } from "react-icons/fa";
 import { NavLink } from "react-router";
@@ -11,6 +11,7 @@ import { FaStreetView } from "react-icons/fa6";
 import { FaHotel } from "react-icons/fa6";
 import { IoHome } from "react-icons/io5";
 import moment from "moment";
+import useAxios from "../hooks/useAxios";
 
 function ReviewCard({
   reviewId,
@@ -39,6 +40,14 @@ function ReviewCard({
       uppText: str,
       remainText: remainsStr,
     };
+  }
+
+  const axiosInstance = useAxios();
+
+  async function ReactLoveIcon() {
+    alert("Hello");
+
+    await axiosInstance.post("",{})
   }
 
   const text = resizeText();
@@ -71,7 +80,10 @@ function ReviewCard({
             </div>
           </div>
           <div className="w-12 h-full  flex items-center justify-center  flex-col gap-2">
-            <button className="cursor-pointer p-3 bg-violet-400/30 rounded-full border border-violet-400/40 shadow hover:bg-violet-400/50  text-purple-950 hover:text-white">
+            <button
+              onClick={ReactLoveIcon}
+              className="cursor-pointer p-3 bg-violet-400/30 rounded-full border border-violet-400/40 shadow hover:bg-violet-400/50  text-purple-950 hover:text-white"
+            >
               <span className="text-[25px] ">
                 <FaRegHeart />
               </span>
