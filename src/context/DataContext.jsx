@@ -18,11 +18,29 @@ function DataContext({ children }) {
   const [topReviewers, setTopReviewers] = useState([]);
   const [limitedReviewsData, setLimitedReviewsData] = useState([]);
   const [myFavoriteReviews, setMyFavoriteReviews] = useState([]);
-  const [myReviewsData, setMyReviewsData] = useState([]);
+  const [myReviews, setMyReviews] = useState([]);
+  const [allReviews, setAllReviews] = useState([]);
 
   const [loader, setLoader] = useState(true);
 
   const HomeDataFetching = useCallback(async () => {
+    try {
+      setLoader(true);
+
+      const res1 = await axiosInstance.get("/api/v1/home-data");
+      setLimitedReviewsData(res1.data.data);
+
+      const res2 = await axiosInstance.get("/api/v1/home-others-data");
+      setUsersFeedback(res2.data.usersFeedback);
+    } catch (error) {
+      console.error("Error fetching service data:", error);
+      alert(error.message);
+    } finally {
+      setLoader(false);
+    }
+  }, []);
+
+  const AllReviewsDataFetching = useCallback(async () => {
     try {
       setLoader(true);
 
@@ -75,6 +93,7 @@ function DataContext({ children }) {
 
   useMemo(() => {
     HomeDataFetching();
+    AllReviewsDataFetching();
     MyFavoriteReviewsDataFetching();
     MyReviewsDataFetching();
   }, [HomeDataFetching]);
@@ -82,15 +101,14 @@ function DataContext({ children }) {
   return (
     <Data_Context.Provider
       value={{
-        foodie,
-        serviceData,
+        limitedReviewsData,
         usersFeedback,
         topReviewers,
+        allReviews,
+        myReviews,
+        myFavoriteReviews,
         loader,
         setLoader,
-        limitedReviewsData,
-        myFavoriteReviews,
-        myReviewsData,
       }}
     >
       {children}
