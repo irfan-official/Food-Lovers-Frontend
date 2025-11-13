@@ -80,6 +80,7 @@ function Home() {
                         (
                           {
                             _id,
+                            user,
                             foodName,
                             image,
                             category,
@@ -95,8 +96,8 @@ function Home() {
                           <ReviewCard
                             key={String(_id)}
                             reviewId={String(_id)}
-                            userName={user?.name}
-                            userImage={user?.image}
+                            userName={user.name}
+                            userImage={user.image}
                             foodName={foodName}
                             image={image}
                             category={category}

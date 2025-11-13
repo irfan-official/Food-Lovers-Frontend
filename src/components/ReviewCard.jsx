@@ -145,10 +145,7 @@ function ReviewCard({
             </section>
 
             <section className="_right_ __view_details-button__ flex justify-center pt-2  ">
-              <NavLink
-                className="px-5 py-3 shadow-md text-nowrap  text-black rounded-lg bg-violet-200 hover:bg-violet-300"
-                to={`/reviews/${reviewId}`}
-              >
+              <NavLink className="px-5 py-3 shadow-md text-nowrap  text-black rounded-lg bg-violet-200 hover:bg-violet-300">
                 View Details
               </NavLink>
             </section>

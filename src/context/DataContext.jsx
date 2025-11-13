@@ -57,6 +57,9 @@ function DataContext({ children }) {
       setLoader(true);
 
       const res = await axiosInstance.get("/api/v1/shows/all-reviews");
+
+      console.log("All reviews === ", res.data);
+
       setAllReviews(res.data.data);
     } catch (error) {
       console.error("Error fetching service data:", error);

@@ -130,6 +130,7 @@ function MyReviews() {
                   _id,
                   foodName,
                   image,
+                  user,
                   category,
                   ratings,
                   restaurantName,
@@ -143,6 +144,8 @@ function MyReviews() {
                 <ReviewCard
                   key={String(_id)}
                   reviewId={String(_id)}
+                  userName={user.name}
+                  userImage={user.image}
                   foodName={foodName}
                   image={image}
                   category={category}
@@ -167,6 +170,7 @@ function MyReviews() {
                 _id,
                 foodName,
                 image,
+                user,
                 category,
                 ratings,
                 restaurantName,
@@ -180,6 +184,8 @@ function MyReviews() {
               <ReviewCard
                 key={String(_id)}
                 reviewId={String(_id)}
+                userName={user.name}
+                userImage={user.image}
                 foodName={foodName}
                 image={image}
                 category={category}

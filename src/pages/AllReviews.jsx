@@ -122,6 +122,7 @@ function AllReviews() {
                   _id,
                   foodName,
                   image,
+                  user,
                   category,
                   ratings,
                   restaurantName,
@@ -136,6 +137,8 @@ function AllReviews() {
                   key={String(_id)}
                   reviewId={String(_id)}
                   foodName={foodName}
+                  userName={user.name}
+                  userImage={user.image}
                   image={image}
                   category={category}
                   ratings={ratings}
@@ -159,6 +162,7 @@ function AllReviews() {
                 _id,
                 foodName,
                 image,
+                user,
                 category,
                 ratings,
                 restaurantName,
@@ -173,6 +177,8 @@ function AllReviews() {
                 key={String(_id)}
                 reviewId={String(_id)}
                 foodName={foodName}
+                userName={user.name}
+                userImage={user.image}
                 image={image}
                 category={category}
                 ratings={ratings}
