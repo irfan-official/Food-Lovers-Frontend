@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Data_Context } from "../context/DataContext.jsx";
+import { Auth_Context } from "../context/AuthContext.jsx";
 import ReviewCard from "../components/ReviewCard.jsx";
 
 import { TbApps } from "react-icons/tb";
@@ -9,12 +10,14 @@ import { MdReviews } from "react-icons/md";
 
 function AllReviews() {
   const { allReviews, loader } = useContext(Data_Context);
+  const { user } = useContext(Auth_Context);
 
   const [searchApp, setSearchApp] = useState("");
   const [searchLoading, setSearchLoading] = useState(false);
   const [filteredApps, setFilteredApps] = useState([]);
 
   useEffect(() => {
+    console.log("user ===> ", user);
     if (!searchApp.trim()) {
       return;
     }
@@ -134,6 +137,8 @@ function AllReviews() {
               ) => (
                 <ReviewCard
                   key={String(_id)}
+                  userName={user?.name || "mao"}
+                  userImage={user.image}
                   reviewId={String(_id)}
                   foodName={foodName}
                   image={image}
@@ -172,6 +177,8 @@ function AllReviews() {
               <ReviewCard
                 key={String(_id)}
                 reviewId={String(_id)}
+                userName={JSON.parse(sessionStorage.getItem("user"))}
+                userImage={user?.image}
                 foodName={foodName}
                 image={image}
                 category={category}

@@ -14,6 +14,8 @@ import moment from "moment";
 import useAxios from "../hooks/useAxios";
 
 function ReviewCard({
+  userName,
+  userImage,
   reviewId,
   foodName,
   image,
@@ -42,12 +44,30 @@ function ReviewCard({
     };
   }
 
+  useEffect(() => {
+    console.log(`----------> ${userName} --- ${userImage}`);
+    console.log("ldlledek =====> ", {
+      userName,
+      userImage,
+      reviewId,
+      foodName,
+      image,
+      category,
+      ratings,
+      restaurantName,
+      location,
+      reviewText,
+      createdAt,
+      loveCount,
+    });
+  }, []);
+
   const axiosInstance = useAxios();
 
   async function ReactLoveIcon() {
     alert("Hello");
 
-    await axiosInstance.post("",{})
+    await axiosInstance.post("", {});
   }
 
   const text = resizeText();
@@ -57,7 +77,7 @@ function ReviewCard({
       <section className="__title__ w-full flex gap-2  ">
         <div className="__left__  object-cover bg-cover w-14 h-14 rounded-full overflow-hidden border-2 border-slate-300 ">
           <img
-            src={image}
+            src={userImage}
             alt=""
             className="w-full h-full bg-amber-300 object-cover object-top"
           />
@@ -65,7 +85,7 @@ function ReviewCard({
 
         <div className="__right__ w-[80%] flex flex-row items-center justify-between">
           <div className="__section-left__ flex flex-col items-start gap-1 justify-center w-[80%] ">
-            <div className="_top_ w-full text-[1.1rem]">name</div>
+            <div className="_top_ w-full text-[1.1rem]">{userName}</div>
             <div className="w-full flex items-center justify-between pr-2">
               <div className="_rating-stars_ flex gap-1 text-violet-400">
                 <FaStar />

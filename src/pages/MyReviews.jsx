@@ -31,10 +31,11 @@ function MyReviews() {
       // filter by matching in serviceName, providerName, or category
       const matched = allReviews.filter(
         (item) =>
-          regex.test(item.serviceName) ||
-          regex.test(item.providerName) ||
           regex.test(item.category) ||
-          regex.test(item.description)
+          regex.test(item.restaurantName) ||
+          regex.test(item.location) ||
+          regex.test(item.foodName) ||
+          regex.test(item.reviewText)
       );
 
       setFilteredReviews(matched);

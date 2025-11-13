@@ -29,11 +29,13 @@ function AuthContext({ children }) {
 
   const secureAxiosInstance = useAxiosSecure();
 
-  const setToken = (token = "") => {
+  const setToken = (token = "", user) => {
     if (token) {
       sessionStorage.setItem("accessToken", token);
+      sessionStorage.setItem("user", user);
     } else {
       sessionStorage.removeItem("accessToken");
+      sessionStorage.removeItem("user");
     }
   };
 
@@ -55,7 +57,11 @@ function AuthContext({ children }) {
         photoURL: photo_URL,
       });
 
-      setToken(createdUser?.accessToken);
+      setToken(createdUser?.accessToken, {
+        name: createdUser.displayName,
+        email: email,
+        image: photo_URL,
+      });
 
       // send post data to /api/v1/create/user
       secureAxiosInstance
@@ -108,7 +114,11 @@ function AuthContext({ children }) {
       );
       const loggedUser = userCredential.user;
 
-      setToken(loggedUser.accessToken);
+      setToken(loggedUser.accessToken, {
+        name: loggedUser.name,
+        email: loggedUser.email,
+        image: loggedUser.photoURL,
+      });
 
       setUser({
         name: loggedUser.displayName || "",
@@ -189,9 +199,15 @@ function AuthContext({ children }) {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      console.log("current user ==> ", currentUser);
+      // console.log("current user ==> ", currentUser);
+
+      setLoading(true);
       if (currentUser) {
-        setToken(currentUser.accessToken);
+        setToken(loggedUser.accessToken, {
+          name: loggedUser.name,
+          email: loggedUser.email,
+          image: loggedUser.photoURL,
+        });
 
         setUser({
           name: currentUser.displayName || "",
@@ -201,7 +217,11 @@ function AuthContext({ children }) {
 
         setForgotEmail(currentUser.email);
       } else {
-        setToken("");
+        setToken("", {
+          name: "",
+          email: "",
+          image: "",
+        });
         setUser(null);
       }
       setLoading(false);
@@ -215,7 +235,11 @@ function AuthContext({ children }) {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
 
-      setToken(user.accessToken);
+      setToken(user.accessToken, {
+        name: user.name,
+        email: user.email,
+        image: user.photoURL,
+      });
 
       secureAxiosInstance
         .post("/api/v1/create/user", {

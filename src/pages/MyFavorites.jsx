@@ -3,12 +3,14 @@ import { TbApps } from "react-icons/tb";
 import { RxCross2 } from "react-icons/rx";
 import { IoSearch } from "react-icons/io5";
 import { Data_Context } from "../context/DataContext.jsx";
+import { Auth_Context } from "../context/AuthContext.jsx";
 import { MdReviews } from "react-icons/md";
 
 import ReviewCard from "../components/ReviewCard.jsx";
 
 function MyFavorites() {
   const { allReviews, loader } = useContext(Data_Context);
+  const { user } = useContext(Auth_Context);
 
   const [searchReviews, setSearchReviews] = useState("");
   const [searchLoading, setSearchLoading] = useState(false);
@@ -31,10 +33,11 @@ function MyFavorites() {
       // filter by matching in serviceName, providerName, or category
       const matched = allReviews.filter(
         (item) =>
-          regex.test(item.serviceName) ||
-          regex.test(item.providerName) ||
           regex.test(item.category) ||
-          regex.test(item.description)
+          regex.test(item.restaurantName) ||
+          regex.test(item.location) ||
+          regex.test(item.foodName) ||
+          regex.test(item.reviewText)
       );
 
       setFilteredReviews(matched);
@@ -142,6 +145,8 @@ function MyFavorites() {
               ) => (
                 <ReviewCard
                   key={String(_id)}
+                  userName={user.name}
+                  userImage={user.image}
                   reviewId={String(_id)}
                   foodName={foodName}
                   image={image}
