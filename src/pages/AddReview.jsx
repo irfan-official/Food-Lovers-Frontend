@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { BiSolidCommentAdd } from "react-icons/bi";
 import { FaStar } from "react-icons/fa";
 import { MdLocationPin } from "react-icons/md";
+import { Auth_Context } from "../context/AuthContext";
+import { useContext } from "react";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
 function AddReview() {
   let [form, setForm] = useState({
@@ -11,16 +14,64 @@ function AddReview() {
     restaurantName: "",
     location: "",
     reviewText: "",
-    ratings: "",
+    ratings: 0,
   });
 
-  function handleSubmit(e) {
+  const [addReviewsLoader, setAddReviewsLoader] = useState(false);
+
+  const { user } = useContext(Auth_Context);
+  const AxiosSecureInstance = useAxiosSecure();
+
+  async function handleSubmit(e) {
     e.preventDefault();
+    if (
+      !form.foodName.trim() ||
+      !form.image.trim() ||
+      !form.category.trim() ||
+      !form.location.trim() ||
+      !form.reviewText.trim() ||
+      !form.ratings
+    ) {
+      return alert("All field are required");
+    }
+
+    if (form.reviewText.length < 47) {
+      alert("reviewText must be at-least 47 words");
+      return;
+    }
+
+    if (!form.restaurantName) {
+      form.restaurantName = form.category;
+    }
+
+    console.log("form ==> ", {
+      name: user.name,
+      email: user.email,
+      ...form,
+    });
+
+    try {
+      setAddReviewsLoader(true);
+      const response = await AxiosSecureInstance.post("/api/v1/create/review", {
+        name: user.name,
+        email: user.email,
+        ...form,
+      });
+
+      if (response.data.success) {
+        console.log("Added reviews");
+      }
+      setAddReviewsLoader(false);
+    } catch (error) {
+      alert(error.message);
+      setAddReviewsLoader(false);
+    }
   }
 
   function handleFormInput(e) {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   }
+
   return (
     <div className="w-full min-h-[90vh] text-black px-2 lg:px-6 sm:px-10 md:px-20 flex flex-col gap-7 sm:gap-10 items-center justify-start">
       <section className="flex items-center justify-center gap-3 sm:gap-3 mt-12">
@@ -39,31 +90,57 @@ function AddReview() {
           <section className="_top_ w-full flex justify-between">
             <div className="_left_ w-[45%] flex flex-col items-start justify-center gap-2 lg:gap-4 ">
               <div className="_image_ rounded-lg overflow-hidden w-full h-[21vh] lg:h-[20vw] bg-gray-600/20 border border-white bg-center shadow">
-                <img
-                  src={form.image}
-                  alt=""
-                  className="w-full h-full object-center object-cover"
-                />
+                {form?.image && (
+                  <img
+                    src={form.image}
+                    className="w-full h-full object-center object-cover"
+                  />
+                )}
               </div>
-              <div className="_ratings_ bg-violet-200 flex flex-col lg:flex-row  gap-1 w-full p-2 rounded shadow">
+              <div className="_ratings_ bg-violet-200 flex flex-col lg:flex-row  gap-1 lg:gap-3 w-full p-2 rounded shadow">
                 <span className="font-semibold text-violet-950 text-[0.8rem] lg:text-[1rem]">
-                  Ratings:{" "}
+                  Ratings:{"  "}
                 </span>
                 <hr className="lg:hidden" />
                 <div className="_stars_ flex items-center gap-3">
-                  <span className="c">
+                  <span
+                    onClick={() => {
+                      setForm((prev) => ({ ...prev, ratings: 1 }));
+                    }}
+                    className="cursor-pointer"
+                  >
                     <FaStar />
                   </span>
-                  <span className="c">
+                  <span
+                    onClick={() => {
+                      setForm((prev) => ({ ...prev, ratings: 2 }));
+                    }}
+                    className="c"
+                  >
                     <FaStar />
                   </span>
-                  <span className="c">
+                  <span
+                    onClick={() => {
+                      setForm((prev) => ({ ...prev, ratings: 3 }));
+                    }}
+                    className="cursor-pointer"
+                  >
                     <FaStar />
                   </span>
-                  <span className="c">
+                  <span
+                    onClick={() => {
+                      setForm((prev) => ({ ...prev, ratings: 4 }));
+                    }}
+                    className="cursor-pointer"
+                  >
                     <FaStar />
                   </span>
-                  <span className="c">
+                  <span
+                    onClick={() => {
+                      setForm((prev) => ({ ...prev, ratings: 5 }));
+                    }}
+                    className="cursor-pointer"
+                  >
                     <FaStar />
                   </span>
                 </div>
@@ -185,8 +262,16 @@ function AddReview() {
             ></textarea>
           </section>
           <section className="__post-button__ w-full ">
-            <button className="w-full text-center border py-2 rounded-md bg-violet-600 text-white font-semibold">
-              Post
+            <button
+              type="submit"
+              disabled={addReviewsLoader}
+              className="w-full flex items-center justify-center border py-2 rounded-md bg-violet-600 text-white font-semibold"
+            >
+              {addReviewsLoader ? (
+                <span class="loading loading-spinner loading-lg"></span>
+              ) : (
+                "Post"
+              )}
             </button>
           </section>
         </form>
