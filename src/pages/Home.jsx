@@ -21,8 +21,6 @@ function Home() {
   let { limitedReviewsData, usersFeedback, topReviewers, loader } =
     useContext(Data_Context);
 
-  const { user } = useContext(Auth_Context);
-
   const axiosInstance = useAxios();
   const axiosSecureInstance = useAxiosSecure();
 
@@ -80,6 +78,7 @@ function Home() {
                         (
                           {
                             _id,
+                            user,
                             foodName,
                             image,
                             category,
@@ -94,9 +93,9 @@ function Home() {
                         ) => (
                           <ReviewCard
                             key={String(_id)}
-                            userName={user?.name}
-                            userImage={user?.image}
                             reviewId={String(_id)}
+                            userName={user.name}
+                            userImage={user.image}
                             foodName={foodName}
                             image={image}
                             category={category}

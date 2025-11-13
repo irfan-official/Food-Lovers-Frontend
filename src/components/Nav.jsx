@@ -19,7 +19,7 @@ function Nav() {
   const [toggleList, setToggleList] = useState(false);
   const [locationName, setLocationName] = useState(useLocation().pathname);
 
-  let { user } = useContext(Auth_Context);
+  let { user, logOut } = useContext(Auth_Context);
 
   const location = useLocation();
 
@@ -228,8 +228,15 @@ function Nav() {
                   <hr className="border-gray-200/20 w-full" />
                   <li
                     className="text-nowrap w-full hover:bg-red-700 hover:text-white p-1 px-2 rounded text-slate-300  text-start flex items-center justify-start gap-2"
-                    onClick={() => {
-                      navigate("/profile");
+                    onClick={async () => {
+                      try {
+                        let result = await logOut();
+                        if (result.success) {
+                          setTimeout(() => navigate("/"), 10);
+                        }
+                      } catch (error) {
+                        alert("error => ", error.message);
+                      }
                     }}
                   >
                     <span className="text-xl text-white">

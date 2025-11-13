@@ -203,10 +203,10 @@ function AuthContext({ children }) {
 
       setLoading(true);
       if (currentUser) {
-        setToken(loggedUser.accessToken, {
-          name: loggedUser.name,
-          email: loggedUser.email,
-          image: loggedUser.photoURL,
+        setToken(currentUser.accessToken, {
+          name: currentUser.name,
+          email: currentUser.email,
+          image: currentUser.photoURL,
         });
 
         setUser({

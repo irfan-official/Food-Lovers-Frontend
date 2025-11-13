@@ -17,7 +17,7 @@ function AllReviews() {
   const [filteredApps, setFilteredApps] = useState([]);
 
   useEffect(() => {
-    console.log("user ===> ", user);
+    // console.log("user ===> ", user);
     if (!searchApp.trim()) {
       return;
     }
@@ -125,6 +125,7 @@ function AllReviews() {
                   _id,
                   foodName,
                   image,
+                  user,
                   category,
                   ratings,
                   restaurantName,
@@ -137,10 +138,10 @@ function AllReviews() {
               ) => (
                 <ReviewCard
                   key={String(_id)}
-                  userName={user?.name || "mao"}
-                  userImage={user.image}
                   reviewId={String(_id)}
                   foodName={foodName}
+                  userName={user.name}
+                  userImage={user.image}
                   image={image}
                   category={category}
                   ratings={ratings}
@@ -164,6 +165,7 @@ function AllReviews() {
                 _id,
                 foodName,
                 image,
+                user,
                 category,
                 ratings,
                 restaurantName,
@@ -177,9 +179,9 @@ function AllReviews() {
               <ReviewCard
                 key={String(_id)}
                 reviewId={String(_id)}
-                userName={JSON.parse(sessionStorage.getItem("user"))}
-                userImage={user?.image}
                 foodName={foodName}
+                userName={user.name}
+                userImage={user.image}
                 image={image}
                 category={category}
                 ratings={ratings}
