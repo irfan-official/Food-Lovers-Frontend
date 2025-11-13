@@ -127,31 +127,31 @@ function MyFavorites() {
             filteredReviews.map(
               (
                 {
-                  serviceId,
-                  serviceName,
-                  providerName,
-                  providerEmail,
-                  price,
-                  rating,
-                  slotsAvailable,
-                  description,
+                  _id,
+                  foodName,
                   image,
                   category,
+                  ratings,
+                  restaurantName,
+                  location,
+                  reviewText,
+                  createdAt,
+                  loved,
                 },
                 index
               ) => (
                 <ReviewCard
-                  key={index}
-                  serviceId={serviceId}
-                  serviceName={serviceName}
-                  providerName={providerName}
-                  providerEmail={providerEmail}
-                  price={price}
-                  rating={rating}
-                  slotsAvailable={slotsAvailable}
-                  description={description}
+                  key={String(_id)}
+                  reviewId={String(_id)}
+                  foodName={foodName}
                   image={image}
                   category={category}
+                  ratings={ratings}
+                  restaurantName={restaurantName}
+                  location={location}
+                  reviewText={reviewText}
+                  createdAt={createdAt}
+                  loveCount={loved.length}
                 />
               )
             )
@@ -164,31 +164,31 @@ function MyFavorites() {
           allReviews.map(
             (
               {
-                serviceId,
-                serviceName,
-                providerName,
-                providerEmail,
-                price,
-                rating,
-                slotsAvailable,
-                description,
+                _id,
+                foodName,
                 image,
                 category,
+                ratings,
+                restaurantName,
+                location,
+                reviewText,
+                createdAt,
+                loved,
               },
               index
             ) => (
               <ReviewCard
-                key={index}
-                serviceId={serviceId}
-                serviceName={serviceName}
-                providerName={providerName}
-                providerEmail={providerEmail}
-                price={price}
-                rating={rating}
-                slotsAvailable={slotsAvailable}
-                description={description}
+                key={String(_id)}
+                reviewId={String(_id)}
+                foodName={foodName}
                 image={image}
                 category={category}
+                ratings={ratings}
+                restaurantName={restaurantName}
+                location={location}
+                reviewText={reviewText}
+                createdAt={createdAt}
+                loveCount={loved.length}
               />
             )
           )
