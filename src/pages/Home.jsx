@@ -20,24 +20,16 @@ import Marquee from "react-fast-marquee";
 
 function Home() {
   let { user, loading } = useContext(Auth_Context);
-  let { serviceData, loader } = useContext(Data_Context);
+  let { serviceData, limitedReviewsData, loader } = useContext(Data_Context);
 
   const axiosInstance = useAxios();
   const axiosSecureInstance = useAxiosSecure();
 
   const location = useLocation();
 
-  useEffect(() => {
-    console.log("location ==> ", location);
-    // axiosInstance
-    //   .get("/api/v1/data")
-    //   .then((res) => {
-    //     console.log("Data ===>", res.data);
-    //   })
-    //   .catch((error) => {
-    //     console.log("error ===>", error.message);
-    //   });
-  }, []);
+  // useEffect(() => {
+  //   console.log("location ==> ", location);
+  // }, []);
 
   // useEffect(() => {
   //   if (!loading && user) {
@@ -141,35 +133,29 @@ function Home() {
               ) : (
                 <>
                   <section className=" grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 xl:gap-5 2xl:gap-10 md:gap-15 justify-center items-center content-center mb-10 mt-12">
-                    {serviceData.length >= 1 &&
-                      serviceData.map(
+                    {limitedReviewsData.length >= 1 &&
+                      limitedReviewsData.map(
                         (
                           {
-                            serviceId,
-                            serviceName,
-                            providerName,
-                            providerEmail,
-                            price,
-                            rating,
-                            slotsAvailable,
-                            description,
+                            foodName,
                             image,
                             category,
+                            ratings,
+                            restaurantName,
+                            location,
+                            reviewText,
                           },
                           index
                         ) => (
                           <ReviewCard
                             key={index}
-                            serviceId={serviceId}
-                            serviceName={serviceName}
-                            providerName={providerName}
-                            providerEmail={providerEmail}
-                            price={price}
-                            rating={rating}
-                            slotsAvailable={slotsAvailable}
-                            description={description}
+                            foodName={foodName}
                             image={image}
                             category={category}
+                            ratings={ratings}
+                            restaurantName={restaurantName}
+                            location={location}
+                            reviewText={reviewText}
                           />
                         )
                       )}

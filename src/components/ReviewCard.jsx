@@ -12,23 +12,20 @@ import { FaHotel } from "react-icons/fa6";
 import { IoHome } from "react-icons/io5";
 
 function ReviewCard({
-  serviceId,
-  serviceName,
-  providerName,
-  providerEmail,
-  price,
-  rating,
-  slotsAvailable,
-  description,
+  foodName,
   image,
   category,
+  ratings,
+  restaurantName,
+  location,
+  reviewText,
 }) {
   return (
     <div className="relative px-5  pt-4 pb-1 w-[22rem] md:w-[24rem] lg:w-[23rem] 2xl:w-[25rem] h-[39rem]  lg:h-[39.3rem] border flex flex-col rounded-lg gap-4 shadow text-[0.9rem] justify-between">
       <section className="__title__ w-full flex gap-2  ">
         <div className="__left__  object-cover bg-cover w-14 h-14 rounded-full overflow-hidden border-2 border-slate-300 ">
           <img
-            src="https://plus.unsplash.com/premium_photo-1682095757120-c9abb908ed60?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8bW9kZWx8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&q=60&w=500"
+            src={image}
             alt=""
             className="w-full h-full bg-amber-300 object-cover object-top"
           />
@@ -78,7 +75,7 @@ function ReviewCard({
       </section>
       <section className="__middle__ flex flex-col gap-3 ">
         <section className="__category__ w-full text-center font-semibold text-lg">
-          food name
+          {foodName}
         </section>
         <section className="__provider_info__ flex items-center justify-between mt-1">
           <section className="__provider_name__ font-semibold text-md 2xl:text-lg  flex items-center gap-3">
@@ -95,7 +92,7 @@ function ReviewCard({
             <span className="text-lg text-violet-900 ">
               <MdLocationPin />
             </span>
-            <span className="c">Lose Angalus</span>
+            <span className="c">{location}</span>
           </section>
         </section>
         <section className="__description__ mt-2 w-full  overflow-hidden pb-2">
