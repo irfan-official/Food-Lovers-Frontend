@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useContext } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { Data_Context } from "../context/DataContext.jsx";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
@@ -9,17 +10,9 @@ import Aos from "aos";
 import "aos/dist/aos.css";
 
 function MeetOurTopReviewersShows() {
+  const { topReviewers } = useContext(Data_Context);
   useEffect(() => {
     Aos.init();
-  }, []);
-
-  let [vetsData, setVetsData] = useState(null);
-
-  useMemo(() => {
-    fetch("vets.json")
-      .then((res) => res.json())
-      .then((data) => setVetsData(data))
-      .catch((err) => console.error("Error loading JSON:", err));
   }, []);
 
   return (
@@ -45,8 +38,8 @@ function MeetOurTopReviewersShows() {
           modules={[Autoplay, Pagination, Navigation]}
           className="mySwiper"
         >
-          {vetsData ? (
-            vetsData.map(
+          {topReviewers ? (
+            topReviewers.map(
               ({ name, nickName, image, rating, statement }, index) => (
                 <SwiperSlide key={index} className="">
                   <section className="flex items-center justify-center">

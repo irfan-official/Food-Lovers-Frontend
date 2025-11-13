@@ -19,72 +19,13 @@ import usersFeedBackData from "../seeds/usersFeedback.js";
 import Marquee from "react-fast-marquee";
 
 function Home() {
-  let { user, loading } = useContext(Auth_Context);
-  let { serviceData, limitedReviewsData, loader } = useContext(Data_Context);
+  let { limitedReviewsData, usersFeedback, topReviewers, loader } =
+    useContext(Data_Context);
 
   const axiosInstance = useAxios();
   const axiosSecureInstance = useAxiosSecure();
 
   const location = useLocation();
-
-  // useEffect(() => {
-  //   console.log("location ==> ", location);
-  // }, []);
-
-  // useEffect(() => {
-  //   if (!loading && user) {
-  //     // secure request — will include token after it’s ready
-  //     axiosSecureInstance
-  //       .get("/api/v1/secure-data")
-  //       .then((res) => console.log("Secure Data:", res.data))
-  //       .catch((err) => console.error("Secure Error:", err.message));
-  //   }
-  // }, [user]);
-
-  // useEffect(() => {
-  //   if (!loading && user) {
-  //     // secure request — will include token after it’s ready
-  //     axiosSecureInstance
-  //       .get("/api/v1/")
-  //       .then((res) => console.log("Secure Data:", res.data))
-  //       .catch((err) => console.error("Secure Error:", err.message));
-  //   }
-  // }, [user]);
-
-  // useEffect(() => {
-  //   if (!loading && user) {
-  //     // secure request — will include token after it’s ready
-  //     axiosSecureInstance
-  //       .post("/api/v1/create/review", { ...user, email: user.email + "mao" })
-  //       .then((res) =>
-  //         console.log("response from /api/v1/create/review => ", res.data)
-  //       )
-  //       .catch((err) => console.error(err));
-  //   }
-  // }, [loading]);
-
-  // useEffect(() => {
-  //   if (!loading && user) {
-  //     // secure request — will include token after it’s ready
-  //     axiosSecureInstance
-  //       .post("/api/v1/create/review", {
-  //         name: user.name,
-  //         email: user.email,
-  //         foodName: "Biriyani",
-  //         image: "http://mao mao",
-  //         category: "Home",
-  //         ratings: 5,
-  //         restaurantName: "Doglapan",
-  //         location: "Khulna",
-  //         reviewText:
-  //           "loreeijoijwijferj jrifjiewrjf rjfierjf e jriejifjerijfi erfjiero jwfrejfije rwirjeifjier ji ferjifjir efre fierwjifjreiwjfi eerjfirejifeir fejifjiro fejferjfierjifer jfrejifjirjeri fioerifojeirj frjiefirejfijerfrejfiroefierojiof",
-  //       })
-  //       .then((res) =>
-  //         console.log("response from /api/v1/create/review => ", res.data)
-  //       )
-  //       .catch((err) => console.error(err));
-  //   }
-  // }, [loading]);
 
   if (loader) {
     return (

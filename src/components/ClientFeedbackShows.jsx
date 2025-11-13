@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import usersFeedBackData from "../seeds/usersFeedback.js";
+import React, { useEffect, useState, useContext } from "react";
+import { Data_Context } from "../context/DataContext.jsx";
 import ClientFeedbackCard from "./ClientFeedbackCard.jsx";
 import Marquee from "react-fast-marquee";
 import Aos from "aos";
@@ -7,6 +7,7 @@ import "aos/dist/aos.css";
 
 function ClientFeedbackShows() {
   const [isMobile, setIsMobile] = useState(false);
+  const { usersFeedback } = useContext(Data_Context);
 
   useEffect(() => {
     Aos.init();
@@ -32,7 +33,7 @@ function ClientFeedbackShows() {
         gradientWidth={300}
         gradientColor={"rgb(255, 255, 255)"}
       >
-        {usersFeedBackData.map(({ user_img, rating, feedback }, index) => (
+        {usersFeedback.map(({ user_img, rating, feedback }, index) => (
           <ClientFeedbackCard
             key={index}
             user_img={user_img}

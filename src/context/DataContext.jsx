@@ -7,10 +7,13 @@ import {
 } from "react";
 import useAxiosSecure from "../hooks/useAxiosSecure.jsx";
 import useAxios from "../hooks/useAxios.jsx";
+import { Auth_Context } from "./AuthContext.jsx";
 
 export const Data_Context = createContext();
 
 function DataContext({ children }) {
+  let { user, loading } = useContext(Auth_Context);
+
   const axiosInstance = useAxios();
   const axiosSecureInstance = useAxiosSecure();
 
