@@ -11,37 +11,60 @@ import useAxios from "../hooks/useAxios.jsx";
 export const Data_Context = createContext();
 
 function DataContext({ children }) {
-  const [serviceData, setServiceData] = useState([]);
-  const [limitedReviewsData, setLimitedReviewsData] = useState([]);
-  const [loader, setLoader] = useState(true);
-  const [foodie, setFoodie] = useState(null);
-
   const axiosInstance = useAxios();
   const axiosSecureInstance = useAxiosSecure();
 
-  const DataFetching = useCallback(async () => {
+  const [usersFeedback, setUsersFeedback] = useState([]);
+  const [topReviewers, setTopReviewers] = useState([]);
+  const [limitedReviewsData, setLimitedReviewsData] = useState([]);
+  const [myFavoriteReviews, setMyFavoriteReviews] = useState([]);
+  const [myReviewsData, setMyReviewsData] = useState([]);
+
+  const [loader, setLoader] = useState(true);
+
+  const HomeDataFetching = useCallback(async () => {
     try {
       setLoader(true);
 
-      axiosInstance
-        .get("/api/v1/home-data")
-        .then((res) => {
-          console.log("Data ===>", res.data);
-          setLimitedReviewsData(res.data);
-        })
-        .catch((error) => {
-          console.log("error ===>", error.message);
-        });
+      const res1 = await axiosInstance.get("/api/v1/home-data");
+      setLimitedReviewsData(res1.data.data);
 
-      const res1 = await fetch("/service.json"); // ✅ ensure file is in /public folder
-      if (!res1.ok) throw new Error("Failed to load data");
-      const data1 = await res1.json();
-      setServiceData(data1);
+      const res2 = await axiosInstance.get("/api/v1/home-others-data");
+      setUsersFeedback(res2.data.usersFeedback);
+    } catch (error) {
+      console.error("Error fetching service data:", error);
+      alert(error.message);
+    } finally {
+      setLoader(false);
+    }
+  }, []);
 
-      const res2 = await fetch("/foodie_peoples.json"); // ✅ ensure file is in /public folder
-      if (!res2.ok) throw new Error("Failed to load data");
-      const data2 = await res2.json();
-      setFoodie(data2);
+  const MyFavoriteReviewsDataFetching = useCallback(async () => {
+    try {
+      setLoader(true);
+
+      const res1 = await axiosInstance.get("/api/v1/home-data");
+      setLimitedReviewsData(res1.data.data);
+
+      const res2 = await axiosInstance.get("/api/v1/home-others-data");
+      setUsersFeedback(res2.data.usersFeedback);
+    } catch (error) {
+      console.error("Error fetching service data:", error);
+      alert(error.message);
+    } finally {
+      setLoader(false);
+    }
+  }, []);
+
+  const MyReviewsDataFetching = useCallback(async () => {
+    try {
+      setLoader(true);
+
+      const res1 = await axiosInstance.get("/api/v1/home-data");
+      setLimitedReviewsData(res1.data.data);
+
+      const res2 = await axiosInstance.get("/api/v1/home-others-data");
+      setUsersFeedback(res2.data.usersFeedback);
     } catch (error) {
       console.error("Error fetching service data:", error);
       alert(error.message);
@@ -51,18 +74,23 @@ function DataContext({ children }) {
   }, []);
 
   useMemo(() => {
-    DataFetching();
-  }, [DataFetching]);
+    HomeDataFetching();
+    MyFavoriteReviewsDataFetching();
+    MyReviewsDataFetching();
+  }, [HomeDataFetching]);
 
   return (
     <Data_Context.Provider
       value={{
         foodie,
         serviceData,
+        usersFeedback,
+        topReviewers,
         loader,
         setLoader,
-        DataFetching,
         limitedReviewsData,
+        myFavoriteReviews,
+        myReviewsData,
       }}
     >
       {children}
