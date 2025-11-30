@@ -18,8 +18,13 @@ import Nav from "../components/Nav.jsx";
 import Marquee from "react-fast-marquee";
 
 function Home() {
-  let { limitedReviewsData, usersFeedback, topReviewers, loader } =
-    useContext(Data_Context);
+  let {
+    limitedReviewsData,
+    setLimitedReviewsData,
+    usersFeedback,
+    topReviewers,
+    loader,
+  } = useContext(Data_Context);
 
   const axiosInstance = useAxios();
   const axiosSecureInstance = useAxiosSecure();
@@ -47,7 +52,7 @@ function Home() {
             <section className="_Hero_ w-full flex flex-col items-center justify-center px-4 lg:px-10 mt-5">
               <div className="w-full relative rounded-2xl overflow-hidden shadow-lg">
                 <section className="w-full h-[70vh] lg:h-[85vh] flex items-center justify-center bg-gray-100 [perspective:1000px] overflow-clip border ">
-                  <section className="w-[150%] bg-black rounded-xl shadow-2xl [transform-style:preserve-3d] [transform:rotateX(3deg)_rotateY(23deg)_translateZ(100px)] transition-transform duration-700 -rotate-3 bg-center">
+                  <section className="w-[150%] bg-black rounded-xl shadow-2xl [transform-style:preserve-3d] [transform:rotateX(3deg)_rotateY(23deg)_translateZ(260px)] transition-transform duration-700 -rotate-3 bg-center">
                     <HeroShow />
                   </section>
                 </section>
@@ -78,9 +83,9 @@ function Home() {
                         (
                           {
                             _id,
-                            user,
                             foodName,
                             image,
+                            user,
                             category,
                             ratings,
                             restaurantName,
@@ -94,6 +99,7 @@ function Home() {
                           <ReviewCard
                             key={String(_id)}
                             reviewId={String(_id)}
+                            index={index}
                             userName={user.name}
                             userImage={user.image}
                             foodName={foodName}
@@ -104,7 +110,9 @@ function Home() {
                             location={location}
                             reviewText={reviewText}
                             createdAt={createdAt}
-                            loveCount={loved.length}
+                            loved={loved}
+                            arr={limitedReviewsData}
+                            updateArr={setLimitedReviewsData}
                           />
                         )
                       )}

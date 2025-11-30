@@ -68,9 +68,9 @@ function MyProfile() {
             onSubmit={handleSubmit}
             className="w-[22rem] md:w-[35rem] border mt-10 md:mt-20  flex flex-col items-center gap-2 p-4 md:p-5 py-10 rounded shadow"
           >
-            <span className="__image__ w-24 h-24 border-3 rounded-full overflow-hidden bg-center object-center">
+            <span className="__image__ object-cover bg-cover w-24 h-24 border-3 rounded-full overflow-hidden bg-center object-center">
               <img
-                className="w-full h-full bg-center object-center"
+                className="w-full h-full object-cover object-top"
                 src={`${user.image}`}
                 alt=""
               />
@@ -124,7 +124,6 @@ function MyProfile() {
                   }`}
                 ></textarea>
               </span>
-              
             </section>
             <section className="mt-10">
               {editForm ? (

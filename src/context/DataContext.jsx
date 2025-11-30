@@ -9,8 +9,21 @@ import {
 import useAxiosSecure from "../hooks/useAxiosSecure.jsx";
 import useAxios from "../hooks/useAxios.jsx";
 import { Auth_Context } from "./AuthContext.jsx";
-
+import food_image from "../lib/food_image.js";
 export const Data_Context = createContext();
+
+export async function fetchWithRetry(apiCall, retries = 7, delay = 1000) {
+  for (let i = 0; i < retries; i++) {
+    try {
+      return await apiCall();
+    } catch (err) {
+      if (i === retries - 1) throw err; // last retry — throw error
+      await new Promise((res) => setTimeout(res, delay)); // wait before retry
+      console.log(`Retrying... (${i + 1})`);
+    }
+  }
+}
+
 
 function DataContext({ children }) {
   let { user, loading } = useContext(Auth_Context);
@@ -21,10 +34,9 @@ function DataContext({ children }) {
   const [usersFeedback, setUsersFeedback] = useState([]);
   const [topReviewers, setTopReviewers] = useState([]);
   const [limitedReviewsData, setLimitedReviewsData] = useState([]);
-  const [myFavoriteReviews, setMyFavoriteReviews] = useState([]);
-  const [myReviews, setMyReviews] = useState([]);
   const [allReviews, setAllReviews] = useState([]);
-  const [foodie, setFoodie] = useState([]);
+  const [foodie, setFoodie] = useState(food_image);
+  const [addReview, setAddReview] = useState(false);
 
   const [loader, setLoader] = useState(true);
 
@@ -32,21 +44,20 @@ function DataContext({ children }) {
     try {
       setLoader(true);
 
-      const res1 = await axiosInstance.get("/api/v1/home-data");
+      const res1 = await fetchWithRetry(() =>
+        axiosInstance.get("/api/v1/home-data")
+      );
       setLimitedReviewsData(res1.data.data);
 
-      const res2 = await axiosInstance.get("/api/v1/home-others-data");
+      const res2 = await fetchWithRetry(() =>
+        axiosInstance.get("/api/v1/home-others-data")
+      );
       setUsersFeedback(res2.data.usersFeedback);
       setTopReviewers(res2.data.topReviewers);
 
-      const res3 = await fetch("/foodie_peoples.json");
-      if (!res3.ok) throw new Error("Failed to load data");
-      const data = await res3.json();
-      setFoodie(data);
-      setLoader(false);
+      setFoodie(food_image);
     } catch (error) {
-      console.error("Error fetching service data:", error);
-      alert(error.message);
+      alert("Backend waking up… please try again.");
     } finally {
       setLoader(false);
     }
@@ -56,72 +67,57 @@ function DataContext({ children }) {
     try {
       setLoader(true);
 
-      const res = await axiosInstance.get("/api/v1/shows/all-reviews");
+      const res = await fetchWithRetry(() =>
+        axiosInstance.get("/api/v1/shows/all-reviews")
+      );
 
-      console.log("All reviews === ", res.data);
-
+      // console.log("All reviews === ", res.data);
       setAllReviews(res.data.data);
     } catch (error) {
       console.error("Error fetching service data:", error);
-      alert(error.message);
+      alert("Backend waking up… please try again.");
     } finally {
       setLoader(false);
     }
   }, []);
 
-  const MyFavoriteReviewsDataFetching = useCallback(async () => {
+  const AllReviewsDataFetchingWithNoLoader = useCallback(async () => {
     try {
-      setLoader(true);
-
-      const res1 = await axiosInstance.get("/api/v1/home-data");
-      setLimitedReviewsData(res1.data.data);
-
-      const res2 = await axiosInstance.get("/api/v1/home-others-data");
-      setUsersFeedback(res2.data.usersFeedback);
+      const res = await fetchWithRetry(() =>
+        axiosInstance.get("/api/v1/shows/all-reviews")
+      );
+      // console.log("All reviews === ", res.data);
+      setAllReviews(res.data.data);
     } catch (error) {
       console.error("Error fetching service data:", error);
-      alert(error.message);
-    } finally {
-      setLoader(false);
+      alert("Backend waking up… please try again.");
     }
   }, []);
 
-  const MyReviewsDataFetching = useCallback(async () => {
-    try {
-      setLoader(true);
-
-      const res1 = await axiosInstance.get("/api/v1/home-data");
-      setLimitedReviewsData(res1.data.data);
-
-      const res2 = await axiosInstance.get("/api/v1/home-others-data");
-      setUsersFeedback(res2.data.usersFeedback);
-    } catch (error) {
-      console.error("Error fetching service data:", error);
-      alert(error.message);
-    } finally {
-      setLoader(false);
-    }
-  }, []);
+  useEffect(() => {
+    AllReviewsDataFetchingWithNoLoader();
+  }, [addReview]);
 
   useMemo(() => {
     HomeDataFetching();
     AllReviewsDataFetching();
-    MyFavoriteReviewsDataFetching();
-    MyReviewsDataFetching();
   }, [HomeDataFetching]);
 
   return (
     <Data_Context.Provider
       value={{
+        AllReviewsDataFetching,
         limitedReviewsData,
+        setLimitedReviewsData,
         usersFeedback,
         topReviewers,
         allReviews,
-        myReviews,
-        myFavoriteReviews,
+        setAllReviews,
         foodie,
         loader,
         setLoader,
+        addReview,
+        setAddReview,
       }}
     >
       {children}

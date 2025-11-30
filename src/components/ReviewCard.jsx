@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import "../index.css";
 import { FaStar } from "react-icons/fa";
 import { NavLink } from "react-router";
@@ -10,11 +10,16 @@ import { MdLocationPin } from "react-icons/md";
 import { FaStreetView } from "react-icons/fa6";
 import { FaHotel } from "react-icons/fa6";
 import { IoHome } from "react-icons/io5";
+import { FaHeart } from "react-icons/fa6";
 import moment from "moment";
 import useAxios from "../hooks/useAxios";
+import useAxiosSecure from "../hooks/useAxiosSecure.jsx";
+import { Data_Context } from "../context/DataContext.jsx";
+import { fetchWithRetry } from "../context/DataContext.jsx";
 
 function ReviewCard({
   reviewId,
+  index,
   userName,
   userImage,
   foodName,
@@ -25,14 +30,31 @@ function ReviewCard({
   location,
   reviewText,
   createdAt,
-  loveCount,
+  loved,
+  arr,
+  updateArr,
 }) {
+  const { setAllReviews, setLimitedReviewsData } = useContext(Data_Context);
+
+  const [isLoved, setIsLoved] = useState(false);
+  const [lovedCount, setLovedCount] = useState(0);
+  const [lovedClicked, setLovedClicked] = useState(false);
+
+  function checkLove() {
+    return loved.includes(localStorage.getItem("_id"));
+  }
+
+  useEffect(() => {
+    setIsLoved(checkLove());
+    setLovedCount(loved?.length || 0);
+  }, [lovedClicked]);
+
   function resizeText() {
     let text = reviewText || "";
     let str = "";
     let remainsStr = "";
     for (let i = 0, lim = text.length; i < lim; i++) {
-      if (i < 45) {
+      if (i < 40) {
         str += text[i];
       } else {
         remainsStr += text[i];
@@ -43,13 +65,43 @@ function ReviewCard({
       remainText: remainsStr,
     };
   }
+  const axiosSecureInstance = useAxiosSecure();
 
-  const axiosInstance = useAxios();
+  async function sendLoveReq() {
+    try {
+      await fetchWithRetry(() =>
+        axiosSecureInstance.post("/api/v1/add/loved-reviews", {
+          _id: localStorage.getItem("_id"),
+          reviewId: reviewId,
+        })
+      );
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
 
-  async function ReactLoveIcon() {
-    alert("Hello");
+  function ReactLoveIcon() {
+    const ID = localStorage.getItem("_id") || "";
+    if (!ID) {
+      alert("Please login first to react!");
+      return;
+    }
 
-    await axiosInstance.post("", {});
+    if (checkLove()) return;
+
+    setLovedClicked((prev) => !prev);
+    setIsLoved(true);
+
+    sendLoveReq();
+
+    updateArr((prev) => {
+      const newArr = prev.map((review, indx) =>
+        Number(indx) === Number(index)
+          ? { ...review, loved: [...review.loved, ID] }
+          : review
+      );
+      return newArr;
+    });
   }
 
   const text = resizeText();
@@ -84,14 +136,24 @@ function ReviewCard({
           <div className="w-12 h-full  flex items-center justify-center  flex-col gap-2">
             <button
               onClick={ReactLoveIcon}
-              className="cursor-pointer p-3 bg-violet-400/30 rounded-full border border-violet-400/40 shadow hover:bg-violet-400/50  text-purple-950 hover:text-white"
+              className={`cursor-pointer p-3  rounded-full border  shadow text-purple-950 ${
+                isLoved
+                  ? "bg-violet-400/30 border-violet-400"
+                  : "bg-violet-400/30 border-violet-400/40 hover:bg-violet-400/50   hover:text-white"
+              }`}
             >
               <span className="text-[25px] ">
-                <FaRegHeart />
+                {isLoved ? (
+                  <span className="c">
+                    <FaHeart />
+                  </span>
+                ) : (
+                  <FaRegHeart />
+                )}
               </span>
             </button>
             <span className="font-bold text-violet-950 bg-violet-300/20 px-3  rounded-2xl">
-              {loveCount}
+              {lovedCount}
             </span>
           </div>
         </div>
@@ -145,7 +207,10 @@ function ReviewCard({
             </section>
 
             <section className="_right_ __view_details-button__ flex justify-center pt-2  ">
-              <NavLink className="px-5 py-3 shadow-md text-nowrap  text-black rounded-lg bg-violet-200 hover:bg-violet-300">
+              <NavLink
+                to={`/reviews/${reviewId}`}
+                className="px-5 py-3 shadow-md text-nowrap  text-black rounded-lg bg-violet-200 hover:bg-violet-300"
+              >
                 View Details
               </NavLink>
             </section>

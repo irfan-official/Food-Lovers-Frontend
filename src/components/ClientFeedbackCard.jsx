@@ -1,14 +1,18 @@
 import React from "react";
 import { FaStar } from "react-icons/fa";
 import { FaRegStar } from "react-icons/fa";
-
+import moment from "moment";
 
 function ClientFeedbackCard({ user_img, rating, feedback }) {
   return (
     <div className="___card__ border w-[20rem]  min-h-[11vw] rounded-xl shadow-md border-gray-300/30 flex flex-col justify-between gap-3 p-5 mx-4 my-2">
       <section className="__img__ w-full flex items-center justify-center">
-        <span className="flex items-center justify-center rounded-full overflow-clip h-20 w-20 border-3 border-gray-400">
-          <img src={user_img} alt="" className="c" />
+        <span className="flex object-cover bg-cover items-center justify-center rounded-full overflow-clip h-20 w-20 border-3 border-gray-400">
+          <img
+            src={user_img}
+            alt=""
+            className="w-full h-full object-cover object-top"
+          />
         </span>
       </section>
       <section className="_stars_ratings_ flex items-center justify-center">
